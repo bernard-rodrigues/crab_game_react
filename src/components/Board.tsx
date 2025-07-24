@@ -1,0 +1,100 @@
+import { useState } from "react"
+import { Crab } from "./Crab"
+import { crabsStart } from "../constants/constants";
+import type { CrabObject } from "../types/types";
+
+export const Board = () => {
+    const [availableSquares, setAvailableSquares] = useState<{x: number, y: number}[]>([]);
+    const [crabs, setCrabs] = useState<CrabObject[]>(crabsStart);
+
+    const handleAvailableSquares = (crabPosition: { x: number; y: number }) => {
+        const newAvailableSquares = [];
+        const directions = [
+            { dx: -1, dy: 0 }, // Left
+            { dx: 1, dy: 0 },  // Right
+            { dx: 0, dy: -1 }, // Up
+            { dx: 0, dy: 1 }   // Down
+        ];
+
+        for (const dir of directions) {
+            let currentX = crabPosition.x + dir.dx;
+            let currentY = crabPosition.y + dir.dy;
+
+            // Keep moving in the current direction until we hit a wall or another crab
+            while (currentX >= 0 && currentX < 6 && currentY >= 0 && currentY < 6) {
+                const currentPosition = { x: currentX, y: currentY };
+                
+                // Check if another crab is at this position
+                const isOccupied = crabs.some(
+                    pos => pos.x === currentPosition.x && pos.y === currentPosition.y
+                );
+
+                if (isOccupied) {
+                    break; // Stop if the path is blocked
+                } else {
+                    newAvailableSquares.push(currentPosition);
+                }
+                
+                currentX += dir.dx;
+                currentY += dir.dy;
+            }
+        }
+
+        // Single state update with all new squares
+        setAvailableSquares(newAvailableSquares);
+    };
+
+    const handleCrabActive = (crab: CrabObject) => {
+        if (crab.active) {
+            setCrabs(crabs.map(currentCrab =>
+                currentCrab.x === crab.x && currentCrab.y === crab.y
+                    ? { ...currentCrab, active: false }
+                    : currentCrab
+            ));
+            setAvailableSquares([]);
+        } else {
+            handleAvailableSquares({ x: crab.x, y: crab.y });
+            setCrabs(crabs.map(currentCrab =>
+                currentCrab.x === crab.x && currentCrab.y === crab.y
+                    ? { ...currentCrab, active: true }
+                    : { ...currentCrab, active: false }
+            ));
+        }
+    }
+    
+    return(
+        <div>
+            <div className="w-screen aspect-square fixed top-1/2 -translate-y-1/2 grid grid-cols-6 grid-rows-6">
+                {[...Array(36)].map((_, i) => (
+                <div
+                    key={i}
+                    className={`w-full h-full ${
+                        ((Math.floor(i / 6) + i % 6) % 2 === 0 ? "bg-black" : "bg-white")
+                    }`}
+                >
+                    <div 
+                        className="w-full h-full rounded-full opacity-35"
+                        style={{
+                            backgroundColor: availableSquares.some(
+                                square =>
+                                    square.x === (i % 6) &&
+                                    square.y === Math.floor(i / 6)
+                            )
+                                ? "oklch(71.5% 0.143 215.221)"
+                                : "transparent"
+                        }}
+                    />
+                </div>
+                ))}
+                
+                {crabs.map(crab => (
+                    <Crab 
+                        key={`${crab.x}${crab.y}`}
+                        crab={crab}
+                        handleCrabActiveFunction={handleCrabActive}
+                    />
+                ))}
+            </div>
+        </div>
+    )
+}
