@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Crab } from "./Crab"
 import { crabsStart } from "../constants/constants";
 import type { CrabObject } from "../types/types";
@@ -9,6 +9,10 @@ export const Board = () => {
     
     const [availableSquares, setAvailableSquares] = useState<{x: number, y: number}[]>([]);
     const [crabs, setCrabs] = useState<CrabObject[]>(crabsStart);
+
+    useEffect(() => {
+        checkWinner();
+    }, [crabs]);
 
     const handleAvailableSquares = (crabPosition: { x: number; y: number }) => {
         const newAvailableSquares = [];
@@ -65,11 +69,13 @@ export const Board = () => {
                 setCrabs(crabs.map(currentCrab =>
                     currentCrab.x === crab.x && currentCrab.y === crab.y
                         ? { ...currentCrab, active: true }
-                        : { ...currentCrab, active: false }
+                        : currentCrab.player === currentPlayer
+                            ? { ...currentCrab, active: false }
+                            : currentCrab
                 ));
             }
         }else{
-            alert("Hey! It's not your turn!")
+            alert("Hey! It's not your turn!");
         }
     }
 
@@ -85,11 +91,45 @@ export const Board = () => {
                         ? { ...crab, x: selectedSquare.x, y: selectedSquare.y, active: false }
                         : crab
                 ));
+
                 setAvailableSquares([]);
                 togglePlayer();
             }else{
                 alert("Not allowed move!");
             }
+        }
+    }
+
+    const checkWinner = (): void => {
+        let winner = 0;
+        // Check rows
+        for (let y = 0; y < 6; y++) {
+            for (let x = 0; x <= 6 - 4; x++) {
+                const rowCrabs = crabs.filter(crab => crab.y === y && crab.x >= x && crab.x < x + 4);
+                if (rowCrabs.length === 4) {
+                    if (rowCrabs.every(crab => crab.player === 1)) {
+                        winner = 1;
+                    } else if (rowCrabs.every(crab => crab.player === 2)) {
+                        winner = 2;
+                    }
+                }
+            }
+        }
+        // Check columns
+        for (let x = 0; x < 6; x++) {
+            for (let y = 0; y <= 6 - 4; y++) {
+                const colCrabs = crabs.filter(crab => crab.x === x && crab.y >= y && crab.y < y + 4);
+                if (colCrabs.length === 4) {
+                    if (colCrabs.every(crab => crab.player === 1)) {
+                        winner = 1;
+                    } else if (colCrabs.every(crab => crab.player === 2)) {
+                        winner = 2;
+                    }
+                }
+            }
+        }
+        if(winner !== 0){
+            setTimeout(() => alert(`Winner is Player ${winner}!`), 100);
         }
     }
     
