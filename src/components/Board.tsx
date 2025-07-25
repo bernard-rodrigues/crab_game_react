@@ -24,32 +24,45 @@ export const Board = () => {
         ];
 
         for (const dir of directions) {
-            let currentX = crabPosition.x + dir.dx;
-            let currentY = crabPosition.y + dir.dy;
+            let currentX = crabPosition.x;
+            let currentY = crabPosition.y;
 
-            // Keep moving in the current direction until we hit a wall or another crab
-            while (currentX >= 0 && currentX < 6 && currentY >= 0 && currentY < 6) {
-                const currentPosition = { x: currentX, y: currentY };
-                
-                // Check if another crab is at this position
+            while (true) {
+                const nextX = currentX + dir.dx;
+                const nextY = currentY + dir.dy;
+
+                // Check if next position is out of bounds
+                if (nextX < 0 || nextX >= 6 || nextY < 0 || nextY >= 6) {
+                    // Last valid square before wall
+                    if (currentX !== crabPosition.x || currentY !== crabPosition.y) {
+                        newAvailableSquares.push({ x: currentX, y: currentY });
+                    }
+                    break;
+                }
+
+                // Check if another crab is at the next position
                 const isOccupied = crabs.some(
-                    pos => pos.x === currentPosition.x && pos.y === currentPosition.y
+                    pos => pos.x === nextX && pos.y === nextY
                 );
 
                 if (isOccupied) {
-                    break; // Stop if the path is blocked
-                } else {
-                    newAvailableSquares.push(currentPosition);
+                    // Last valid square before crab
+                    if (currentX !== crabPosition.x || currentY !== crabPosition.y) {
+                        newAvailableSquares.push({ x: currentX, y: currentY });
+                    }
+                    break;
                 }
-                
-                currentX += dir.dx;
-                currentY += dir.dy;
+
+                // Move to next square
+                currentX = nextX;
+                currentY = nextY;
             }
         }
 
-        // Single state update with all new squares
         setAvailableSquares(newAvailableSquares);
     };
+
+    
 
     const handleCrabSelection = (crab: CrabObject) => {
         if(crab.player === currentPlayer){
