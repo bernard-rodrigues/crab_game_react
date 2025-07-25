@@ -15,15 +15,22 @@ export const App = () => {
       togglePlayer
     }}>
       <main 
-        className="relative h-screen w-screen"
+        className="relative h-screen w-screen font-ribeye"
         style={{
           backgroundImage: 
             currentPlayer === 1 ? 
-            "linear-gradient(to bottom, hsl(211, 100%, 80%), hsl(211, 100%, 70%))" :
-            "linear-gradient(to bottom, hsl(354, 70%, 83%), hsl(354, 70%, 73%))",
+            "linear-gradient(to bottom, hsl(211, 100%, 80%), hsl(211, 100%, 65%))" :
+            "linear-gradient(to bottom, hsl(354, 70%, 83%), hsl(354, 70%, 68%))",
         }}
       >
-        <h1 className="text-main-text text-xl absolute top-1/8 -translate-y-1/2 left-1/2 -translate-1/2">Player {currentPlayer} turn</h1>
+        <h1 className="
+          text-main-text text-4xl md:text-6xl text-center 
+          w-full absolute top-1/8 left-1/2 -translate-x-1/2
+          md:top-16
+          lg:text-left lg:translate-x-0 lg:w-auto lg:left-8 lg:text-3xl
+        ">
+          Player {currentPlayer} turn
+        </h1>
         <Board />
       </main>
     </TurnContext.Provider>

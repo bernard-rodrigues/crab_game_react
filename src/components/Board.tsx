@@ -147,13 +147,18 @@ export const Board = () => {
     }
     
     return(
-        <div id="board" className="w-[95%] aspect-square absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid grid-cols-6 grid-rows-6 border-4 border-main-text shadow-2xl">
+        <div id="board" className="
+            w-[95%] md:w-3/4 lg:w-auto lg:h-[80%] aspect-square 
+            absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 
+            grid grid-cols-6 grid-rows-6 
+            border-4 border-main-text shadow-2xl
+        ">
             {[...Array(36)].map((_, squareId) => (
             <div
                 id={`square-${squareId}`}
                 key={squareId}
                 className={`w-full h-full ${
-                    ((Math.floor(squareId / 6) + squareId % 6) % 2 === 0 ? "bg-linear-to-br from-board-blackest to-board-black" : "bg-linear-to-br from-board-whitest to-board-white")
+                    ((Math.floor(squareId / 6) + squareId % 6) % 2 === 0 ? "bg-linear-to-br from-slate-300 to-slate-200" : "bg-linear-to-br from-slate-100 to-slate-50")
                 }`}
                 onClick={() => moveCrab(squareId)}
             >
@@ -172,6 +177,7 @@ export const Board = () => {
             </div>
             ))}
             
+            {/* Crabs distribution on the board */}
             {crabs.map(crab => (
                 <Crab 
                     key={`${crab.x}${crab.y}`}

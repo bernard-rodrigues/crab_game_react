@@ -1,15 +1,6 @@
 @import "tailwindcss";
 
 @theme{
-    --color-p1-blue: hsl(211, 100%, 50%);
-    --color-p2-red: hsl(354, 70%, 53%);
-    --color-p1-bg-blue: hsl(211, 100%, 80%);
-    --color-p2-bg-red: hsl(354, 70%, 83%);
-
     --color-main-text: hsl(6, 10%, 19%);
-
-    --color-board-black: hsl(20, 90%, 80%);
-    --color-board-blackest: hsl(20, 90%, 70%);
-    --color-board-white: hsl(50, 90%, 80%);
-    --color-board-whitest: hsl(50, 90%, 70%);
+    --font-ribeye: "Ribeye", serif;
 }
