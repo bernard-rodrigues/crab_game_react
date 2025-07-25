@@ -1,19 +1,13 @@
-import { createContext, useState } from "react"
+import { useState } from "react"
 import { Board } from "./components/Board"
-
-interface TurnContextProps{
-  currentPlayer: number
-  togglePlayer: () => void
-}
+import { TurnContext } from "./contexts/TurnContext";
 
 export const App = () => {
-  const [currentPlayer, setCurrentPlayer] = useState(1);
+  const [currentPlayer, setCurrentPlayer] = useState(() => Math.random() < 0.5 ? 1 : 2);
 
   const togglePlayer = () => {
     setCurrentPlayer(currentPlayer === 1 ? 2 : 1); 
   }
-
-  const TurnContext = createContext({} as TurnContextProps);
   
   return (
     <TurnContext.Provider value={{

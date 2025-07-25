@@ -20,5 +20,5 @@ export const Crab = (props: CrabProps) => {
             }}
             onClick={() => props.handleCrabActiveFunction(props.crab)}
         />
-    )
+    );
 }
