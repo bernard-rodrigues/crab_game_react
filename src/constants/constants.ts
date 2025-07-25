@@ -14,4 +14,4 @@ export const crabsStart: CrabObject[] = [
     {x: 5, y: 3, player: 2, active: false},
     {x: 0, y: 5, player: 2, active: false},
     {x: 3, y: 5, player: 2, active: false},
-]
+];

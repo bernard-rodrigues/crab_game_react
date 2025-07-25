@@ -1,9 +1,12 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Crab } from "./Crab"
 import { crabsStart } from "../constants/constants";
 import type { CrabObject } from "../types/types";
+import { TurnContext } from "../contexts/TurnContext";
 
 export const Board = () => {
+    const {currentPlayer, togglePlayer} = useContext(TurnContext);
+    
     const [availableSquares, setAvailableSquares] = useState<{x: number, y: number}[]>([]);
     const [crabs, setCrabs] = useState<CrabObject[]>(crabsStart);
 
@@ -45,23 +48,28 @@ export const Board = () => {
     };
 
     const handleCrabSelection = (crab: CrabObject) => {
-        // Check if the selected crab is active
-        if (crab.active) {
-            // Set the current crab as inactive
-            setCrabs(crabs.map(currentCrab =>
-                currentCrab.x === crab.x && currentCrab.y === crab.y
-                    ? { ...currentCrab, active: false }
-                    : currentCrab
-            ));
-            setAvailableSquares([]);
-        } else {
-            handleAvailableSquares({ x: crab.x, y: crab.y });
-            // Set the current crab as active
-            setCrabs(crabs.map(currentCrab =>
-                currentCrab.x === crab.x && currentCrab.y === crab.y
-                    ? { ...currentCrab, active: true }
-                    : { ...currentCrab, active: false }
-            ));
+        if(crab.player === currentPlayer){
+
+            // Check if the selected crab is active
+            if (crab.active) {
+                // Set the current crab as inactive
+                setCrabs(crabs.map(currentCrab =>
+                    currentCrab.x === crab.x && currentCrab.y === crab.y
+                        ? { ...currentCrab, active: false }
+                        : currentCrab
+                ));
+                setAvailableSquares([]);
+            } else {
+                handleAvailableSquares({ x: crab.x, y: crab.y });
+                // Set the current crab as active
+                setCrabs(crabs.map(currentCrab =>
+                    currentCrab.x === crab.x && currentCrab.y === crab.y
+                        ? { ...currentCrab, active: true }
+                        : { ...currentCrab, active: false }
+                ));
+            }
+        }else{
+            alert("Hey! It's not your turn!")
         }
     }
 
@@ -78,6 +86,7 @@ export const Board = () => {
                         : crab
                 ));
                 setAvailableSquares([]);
+                togglePlayer();
             }else{
                 alert("Not allowed move!");
             }
@@ -118,5 +127,5 @@ export const Board = () => {
                 />
             ))}
         </div>   
-    )
+    );
 }
