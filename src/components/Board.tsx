@@ -45,7 +45,9 @@ export const Board = () => {
     };
 
     const handleCrabActive = (crab: CrabObject) => {
+        // Check if the selected crab is active
         if (crab.active) {
+            // Set the current crab as inactive
             setCrabs(crabs.map(currentCrab =>
                 currentCrab.x === crab.x && currentCrab.y === crab.y
                     ? { ...currentCrab, active: false }
@@ -54,6 +56,7 @@ export const Board = () => {
             setAvailableSquares([]);
         } else {
             handleAvailableSquares({ x: crab.x, y: crab.y });
+            // Set the current crab as active
             setCrabs(crabs.map(currentCrab =>
                 currentCrab.x === crab.x && currentCrab.y === crab.y
                     ? { ...currentCrab, active: true }
@@ -61,40 +64,60 @@ export const Board = () => {
             ));
         }
     }
+
+    const moveCrab = (squareId: number) => {
+        const activeCrab = crabs.find(crab => crab.active === true);
+        if(activeCrab){
+            const selectedSquare = {x: squareId%6, y: Math.floor(squareId/6)};
+            // Verify if the user clicked on an available square
+            if(availableSquares.some(square => square.x === selectedSquare.x && square.y === selectedSquare.y)){
+                // Moves the crab to the selected square
+                setCrabs([...crabs.filter(crab => !crab.active), {
+                    ...activeCrab,
+                    x: selectedSquare.x,
+                    y: selectedSquare.y,
+                    active: false
+                }]);
+                setAvailableSquares([]);
+            }else{
+                alert("Not allowed move!");
+            }
+        }
+    }
     
     return(
-        <div>
-            <div className="w-screen aspect-square fixed top-1/2 -translate-y-1/2 grid grid-cols-6 grid-rows-6">
-                {[...Array(36)].map((_, i) => (
-                <div
-                    key={i}
-                    className={`w-full h-full ${
-                        ((Math.floor(i / 6) + i % 6) % 2 === 0 ? "bg-black" : "bg-white")
-                    }`}
-                >
-                    <div 
-                        className="w-full h-full rounded-full opacity-35"
-                        style={{
-                            backgroundColor: availableSquares.some(
-                                square =>
-                                    square.x === (i % 6) &&
-                                    square.y === Math.floor(i / 6)
-                            )
-                                ? "oklch(71.5% 0.143 215.221)"
-                                : "transparent"
-                        }}
-                    />
-                </div>
-                ))}
-                
-                {crabs.map(crab => (
-                    <Crab 
-                        key={`${crab.x}${crab.y}`}
-                        crab={crab}
-                        handleCrabActiveFunction={handleCrabActive}
-                    />
-                ))}
+        <div id="board" className="w-screen aspect-square fixed top-1/2 -translate-y-1/2 grid grid-cols-6 grid-rows-6">
+            {[...Array(36)].map((_, squareId) => (
+            <div
+                id={`square-${squareId}`}
+                key={squareId}
+                className={`w-full h-full ${
+                    ((Math.floor(squareId / 6) + squareId % 6) % 2 === 0 ? "bg-black" : "bg-white")
+                }`}
+                onClick={() => moveCrab(squareId)}
+            >
+                <div 
+                    className="w-full h-full rounded-full opacity-35"
+                    style={{
+                        backgroundColor: availableSquares.some(
+                            square =>
+                                square.x === (squareId % 6) &&
+                                square.y === Math.floor(squareId / 6)
+                        )
+                            ? "oklch(71.5% 0.143 215.221)"
+                            : "transparent"
+                    }}
+                />
             </div>
-        </div>
+            ))}
+            
+            {crabs.map(crab => (
+                <Crab 
+                    key={`${crab.x}${crab.y}`}
+                    crab={crab}
+                    handleCrabActiveFunction={handleCrabActive}
+                />
+            ))}
+        </div>   
     )
 }
