@@ -44,7 +44,7 @@ export const Board = () => {
         setAvailableSquares(newAvailableSquares);
     };
 
-    const handleCrabActive = (crab: CrabObject) => {
+    const handleCrabSelection = (crab: CrabObject) => {
         // Check if the selected crab is active
         if (crab.active) {
             // Set the current crab as inactive
@@ -72,12 +72,11 @@ export const Board = () => {
             // Verify if the user clicked on an available square
             if(availableSquares.some(square => square.x === selectedSquare.x && square.y === selectedSquare.y)){
                 // Moves the crab to the selected square
-                setCrabs([...crabs.filter(crab => !crab.active), {
-                    ...activeCrab,
-                    x: selectedSquare.x,
-                    y: selectedSquare.y,
-                    active: false
-                }]);
+                setCrabs(crabs.map(crab =>
+                    crab.active
+                        ? { ...crab, x: selectedSquare.x, y: selectedSquare.y, active: false }
+                        : crab
+                ));
                 setAvailableSquares([]);
             }else{
                 alert("Not allowed move!");
@@ -115,7 +114,7 @@ export const Board = () => {
                 <Crab 
                     key={`${crab.x}${crab.y}`}
                     crab={crab}
-                    handleCrabActiveFunction={handleCrabActive}
+                    handleCrabActiveFunction={handleCrabSelection}
                 />
             ))}
         </div>   
