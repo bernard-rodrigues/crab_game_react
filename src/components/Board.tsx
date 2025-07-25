@@ -85,13 +85,13 @@ export const Board = () => {
     }
     
     return(
-        <div id="board" className="w-screen aspect-square fixed top-1/2 -translate-y-1/2 grid grid-cols-6 grid-rows-6">
+        <div id="board" className="w-[95%] aspect-square absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid grid-cols-6 grid-rows-6 border-4 border-main-text shadow-2xl">
             {[...Array(36)].map((_, squareId) => (
             <div
                 id={`square-${squareId}`}
                 key={squareId}
                 className={`w-full h-full ${
-                    ((Math.floor(squareId / 6) + squareId % 6) % 2 === 0 ? "bg-black" : "bg-white")
+                    ((Math.floor(squareId / 6) + squareId % 6) % 2 === 0 ? "bg-linear-to-br from-board-blackest to-board-black" : "bg-linear-to-br from-board-whitest to-board-white")
                 }`}
                 onClick={() => moveCrab(squareId)}
             >
