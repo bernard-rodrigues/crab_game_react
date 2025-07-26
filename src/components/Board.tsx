@@ -145,6 +145,14 @@ export const Board = () => {
             setTimeout(() => alert(`Winner is Player ${winner}!`), 100);
         }
     }
+
+    const checkAvailability = (squareId: number) => {
+        return availableSquares.some(
+            square =>
+                square.x === (squareId % 6) &&
+                square.y === Math.floor(squareId / 6)
+        )
+    } 
     
     return(
         <div id="board" className="
@@ -162,16 +170,13 @@ export const Board = () => {
                 }`}
                 onClick={() => moveCrab(squareId)}
             >
+                {/* Possible positions shadow */}
                 <div 
-                    className="w-full h-full rounded-full opacity-35"
+                    className="w-full h-full rounded-full transition-all duration-300"
                     style={{
-                        backgroundColor: availableSquares.some(
-                            square =>
-                                square.x === (squareId % 6) &&
-                                square.y === Math.floor(squareId / 6)
-                        )
-                            ? "oklch(71.5% 0.143 215.221)"
-                            : "transparent"
+                        opacity: checkAvailability(squareId) ? "0.35" : "0",
+                        backgroundColor: currentPlayer === 1 ? "hsl(211, 100%, 50%)" : "hsl(354, 70%, 53%)",
+                        scale: checkAvailability(squareId) ? "0.9" : "0"
                     }}
                 />
             </div>

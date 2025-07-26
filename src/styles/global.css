@@ -2,5 +2,9 @@
 
 @theme{
     --color-main-text: hsl(6, 10%, 19%);
+    --color-crab-blue-left: hsl(211, 100%, 60%);
+    --color-crab-blue-right: hsl(211, 100%, 40%);
+    --color-crab-red-left: hsl(354, 70%, 63%);
+    --color-crab-red-right: hsl(354, 70%, 43%);
     --font-ribeye: "Ribeye", serif;
 }
