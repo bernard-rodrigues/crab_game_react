@@ -30,9 +30,9 @@ export const Crab = (props: CrabProps) => {
     }
     
     return(
-        <div 
+        <div
             className={`
-                absolute w-1/6 h-1/6 rounded-full shadow-md shadow-zinc-600 transition-all duration-150
+                absolute w-1/6 h-1/6 rounded-full shadow-md shadow-zinc-600 transition-all duration-300 ease-out
                 bg-linear-to-r ${props.crab.player === 1 ? "from-crab-blue-left to-crab-blue-right" : "from-crab-red-left to-crab-red-right"}
             `}
             style={isHovered && currentPlayer === props.crab.player ? { ...crabStyle, ...hoverStyle } : crabStyle}

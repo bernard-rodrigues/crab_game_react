@@ -12,9 +12,9 @@ export const TurnTextbox = (props: TurnTextboxProps) => {
             // Tailwind CSS classes for responsive layout, fixed position, and smooth transitions
             className="
                 text-main-text text-4xl text-center
-                w-full fixed top-1/8 transition-all duration-500
-                md:top-16 md:text-6xl
-                lg:w-fit lg:translate-x-0 lg:text-3xl lg:top-1/2 lg:-translate-y-1/2
+                w-full fixed top-[12vh] transition-all duration-500
+                md:top-[10vh] md:text-6xl
+                lg:w-fit lg:translate-x-0 lg:text-[3vw] lg:top-1/2 lg:-translate-y-1/2
             "
 
             // Inline styles to control horizontal position depending on:
@@ -39,10 +39,10 @@ export const TurnTextbox = (props: TurnTextboxProps) => {
                     props.textBoxOwner === 1 ? 
                         {
                             // Player 1's textbox: visible on the left if it's their turn
-                            left: props.currentPlayer === 1 ? "2rem" : "-100%"
+                            left: props.currentPlayer === 1 ? "5vw" : "-100%"
                         } : {
                             // Player 2's textbox: visible on the right if it's their turn
-                            right: props.currentPlayer === 2 ? "2rem" : "-100%"
+                            right: props.currentPlayer === 2 ? "5vw" : "-100%"
                         }
                 )
             }

@@ -185,7 +185,7 @@ export const Board = () => {
             {/* Crabs distribution on the board */}
             {crabs.map(crab => (
                 <Crab 
-                    key={`${crab.x}${crab.y}`}
+                    key={crab.id}
                     crab={crab}
                     handleCrabActiveFunction={handleCrabSelection}
                 />
