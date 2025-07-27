@@ -4,9 +4,12 @@ import { crabsStart } from "../constants/constants";
 import type { CrabObject } from "../types/types";
 import { TurnContext } from "../contexts/TurnContext";
 import { Square } from "./Square";
+import {BasicModal} from "./BasicModal";
 
 export const Board = () => {
     const {currentPlayer, togglePlayer} = useContext(TurnContext);
+
+    const [currentMessage, setCurrentMessage] = useState("");
     
     const [availableSquares, setAvailableSquares] = useState<{x: number, y: number}[]>([]);
     const [crabs, setCrabs] = useState<CrabObject[]>(crabsStart);
@@ -87,7 +90,7 @@ export const Board = () => {
                 ));
             }
         }else{
-            alert("Hey! It's not your turn!");
+            handleModalMessage("Hey! It's not your turn!");
         }
     }
 
@@ -107,7 +110,7 @@ export const Board = () => {
                 setAvailableSquares([]);
                 togglePlayer();
             }else{
-                alert("Not allowed move!");
+                handleModalMessage("Not allowed move!");
             }
         }
     }
@@ -141,7 +144,7 @@ export const Board = () => {
             }
         }
         if(winner !== 0){
-            setTimeout(() => alert(`Winner is Player ${winner}!`), 100);
+            handleModalMessage(`Winner is Player ${winner}!`);
         }
     }
 
@@ -151,7 +154,16 @@ export const Board = () => {
                 square.x === (squareId % 6) &&
                 square.y === Math.floor(squareId / 6)
         )
-    } 
+    }
+
+    const handleModalMessage = (message: string) => {
+        setCurrentMessage(message);
+        handleModalOpen();
+    }
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const handleModalOpen = () => setModalOpen(true);
+    const handleModalClose = () => setModalOpen(false);
     
     return(
         <div 
@@ -181,6 +193,8 @@ export const Board = () => {
                     handleCrabActiveFunction={handleCrabSelection}
                 />
             ))}
+
+            <BasicModal isOpen={modalOpen} message={currentMessage} closeModalFunction={handleModalClose}/>
         </div>   
     );
 }
