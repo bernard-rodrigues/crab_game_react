@@ -3,6 +3,7 @@ import { Crab } from "./Crab"
 import { crabsStart } from "../constants/constants";
 import type { CrabObject } from "../types/types";
 import { TurnContext } from "../contexts/TurnContext";
+import { Square } from "./Square";
 
 export const Board = () => {
     const {currentPlayer, togglePlayer} = useContext(TurnContext);
@@ -61,8 +62,6 @@ export const Board = () => {
 
         setAvailableSquares(newAvailableSquares);
     };
-
-    
 
     const handleCrabSelection = (crab: CrabObject) => {
         if(crab.player === currentPlayer){
@@ -155,31 +154,23 @@ export const Board = () => {
     } 
     
     return(
-        <div id="board" className="
-            w-[95%] md:w-3/4 lg:w-auto lg:h-[80%] aspect-square 
-            absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 
-            grid grid-cols-6 grid-rows-6 
-            border-4 border-main-text shadow-2xl
-        ">
+        <div 
+            id="board" 
+            className="
+                w-[95%] md:w-3/4 lg:w-auto lg:h-[80%] aspect-square 
+                absolute left-1/2 top-1/2 -translate-x-1/2
+                grid grid-cols-6 grid-rows-6
+                border-2 border-main-text shadow-2xl
+                animate-appear-from-up-to-center duration-500 ease-in-out
+            "
+        >
             {[...Array(36)].map((_, squareId) => (
-            <div
-                id={`square-${squareId}`}
-                key={squareId}
-                className={`w-full h-full ${
-                    ((Math.floor(squareId / 6) + squareId % 6) % 2 === 0 ? "bg-linear-to-br from-slate-300 to-slate-200" : "bg-linear-to-br from-slate-100 to-slate-50")
-                }`}
-                onClick={() => moveCrab(squareId)}
-            >
-                {/* Possible positions shadow */}
-                <div 
-                    className="w-full h-full rounded-full transition-all duration-300"
-                    style={{
-                        opacity: checkAvailability(squareId) ? "0.35" : "0",
-                        backgroundColor: currentPlayer === 1 ? "hsl(211, 100%, 50%)" : "hsl(354, 70%, 53%)",
-                        scale: checkAvailability(squareId) ? "0.9" : "0"
-                    }}
+                <Square 
+                    key={squareId}
+                    squareId={squareId}
+                    moveCrabFunction={moveCrab}
+                    checkAvailabilityFunction={checkAvailability}
                 />
-            </div>
             ))}
             
             {/* Crabs distribution on the board */}

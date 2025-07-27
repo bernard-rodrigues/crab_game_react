@@ -11,7 +11,7 @@ export const TurnTextbox = (props: TurnTextboxProps) => {
         <h2 
             // Tailwind CSS classes for responsive layout, fixed position, and smooth transitions
             className="
-                text-main-text text-4xl text-center
+                text-main-text text-4xl text-center animate-appear
                 w-full fixed top-[12vh] transition-all duration-500
                 md:top-[10vh] md:text-6xl
                 lg:w-fit lg:translate-x-0 lg:text-[3vw] lg:top-1/2 lg:-translate-y-1/2

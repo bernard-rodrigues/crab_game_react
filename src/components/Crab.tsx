@@ -15,18 +15,20 @@ export const Crab = (props: CrabProps) => {
     const crabStyle = {
         left: `${(props.crab.x/6)*100}%`,
         top: `${(props.crab.y/6)*100}%`,
-
-        transform: `scale(${props.crab.active ? 1 : props.crab.player === currentPlayer ? 0.9 : 0.8})`,
+        transform: `scale(${props.crab.active ? 1 : 0.8})`,
+        animation: props.crab.player === currentPlayer ? "bounce 0.75s infinite" : "none",
         outline: props.crab.active ? `2px solid ${
             props.crab.player === 1 ? 
             "hsla(211, 100%, 50%, 50%)" : 
             "hsla(354, 70%, 53%, 50%)"
         }` : `0px solid transparent`,
-        outlineOffset: props.crab.active ? "8px" : "0px",
+        outlineOffset: props.crab.active ? "16px" : "0px",
+        filter: props.crab.active ? "brightness(125%)" : "none",
     }
 
     const hoverStyle = {
-        filter: "brightness(125%)"
+        filter: "brightness(125%)",
+        cursor: "pointer",
     }
     
     return(
