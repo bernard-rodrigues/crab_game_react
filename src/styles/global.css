@@ -7,4 +7,15 @@
     --color-crab-red-left: hsl(354, 70%, 63%);
     --color-crab-red-right: hsl(354, 70%, 43%);
     --font-ribeye: "Ribeye", serif;
+
+    --animate-rotate-x: rotateX 0.5s ease-in-out forwards;
+
+    @keyframes rotateX {
+        0% {
+            transform: rotateX(0deg);
+        }
+        100% {
+            transform: rotateX(360deg);
+        }
+    }
 }
