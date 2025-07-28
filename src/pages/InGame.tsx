@@ -5,13 +5,17 @@ import { TurnContext } from "../contexts/TurnContext";
 import { ExitDoor } from "../components/ExitDoor";
 
 export const InGame = () => {
-    const {currentPlayer, screenWidth} = useContext(TurnContext);
+    const {currentPlayer, screenWidth, gameState} = useContext(TurnContext);
     
     return(
         <>
             <ExitDoor />
-            <TurnTextbox currentPlayer={currentPlayer} screenWidth={screenWidth} textBoxOwner={1}/>
-            <TurnTextbox currentPlayer={currentPlayer} screenWidth={screenWidth} textBoxOwner={2}/>
+            {gameState !== 3 ? 
+            <>
+                <TurnTextbox currentPlayer={currentPlayer} screenWidth={screenWidth} textBoxOwner={1}/>
+                <TurnTextbox currentPlayer={currentPlayer} screenWidth={screenWidth} textBoxOwner={2}/>
+            </> : <></> 
+            }
             <Board />
         </>
     );

@@ -8,7 +8,7 @@ interface CrabProps{
 }
 
 export const Crab = (props: CrabProps) => {
-    const {currentPlayer} = useContext(TurnContext);
+    const {currentPlayer, gameState} = useContext(TurnContext);
     
     const [isHovered, setIsHovered] = useState(false);
     
@@ -39,7 +39,7 @@ export const Crab = (props: CrabProps) => {
             `}
             style={isHovered && currentPlayer === props.crab.player ? { ...crabStyle, ...hoverStyle } : crabStyle}
             onClick={() => props.handleCrabActiveFunction(props.crab)}
-            onMouseEnter={() => setIsHovered(true)}
+            onMouseEnter={() => setIsHovered(gameState === 1 ? true : false)}
             onMouseLeave={() => setIsHovered(false)}
         />
     );

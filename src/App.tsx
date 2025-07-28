@@ -42,17 +42,16 @@ export const App = () => {
       handleGameStateChange
     }}>
       <main 
-        className="relative h-screen w-screen font-ribeye transition-all duration-500"
+        className="relative h-screen w-screen font-ribeye transition-all duration-500 overflow-hidden"
         style={{
           backgroundImage: "linear-gradient(to right, hsl(211, 100%, 80%) 0%, hsl(211, 100%, 65%) 50%, hsl(354, 70%, 68%) 50%, hsl(354, 70%, 83%) 100%)",
-          backgroundSize: gameState === 1 ? "200% 100%" :"100% 100%",
+          backgroundSize: gameState === 1 ? "200% 100%" : "100% 100%",
           backgroundPosition: `${currentPlayer === 1 ? "0% 0%" : "100% 0%"}`
         }}
       >
         {gameState === 0
-          ? <MainMenu /> : gameState === 1
-          ? <InGame /> : gameState === 2
-          ? <HowToPlay /> : <></>
+          ? <MainMenu /> : gameState === 2
+          ? <HowToPlay /> : <InGame />
         }
 
       </main>

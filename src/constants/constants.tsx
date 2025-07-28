@@ -70,3 +70,12 @@ export const rules = [
             )
         },
     ];
+
+export const messages = {
+    victoryBlue: "🎉🎉 Winner is Blue! 🎉🎉",
+    victoryRed: "🎉🎉 Winner is Red! 🎉🎉",
+    victoryPlayer: "🎉🎉 You win! 🎉🎉",
+    victoryCPU: "You lose...",
+    notAllowedMove: "Oops! This move is not allowed.",
+    notYourTurn: "Hey! It's not your turn!"
+}
