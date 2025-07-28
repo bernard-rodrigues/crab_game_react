@@ -1,69 +1,63 @@
-# React + TypeScript + Vite
+# Crab Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Crab Connect is a strategic board game where players move crabs across a 6x6 grid with the goal of getting four of their crabs in a row, either horizontally or vertically. Challenge a friend in two-player mode or test your skills against an AI opponent!
 
-Currently, two official plugins are available:
+## 🦀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Two Player Mode: Play against a friend on the same board.
+- AI Opponent: Challenge yourself against a computer-controlled opponent.
+- Intuitive Movement: Crabs move horizontally or vertically until they hit another crab or the edge of the board.
+- Dynamic Board: Visual indicators for available moves.
+- Win Detection: Automatically identifies when a player achieves four in a row.
+- Responsive Design: Enjoy the game on various screen sizes.
 
-## Expanding the ESLint configuration
+## 🎮 How to Play
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Select a Game Mode: Choose between playing against another player or the AI.
+2. Player Turns: Players take turns moving their crabs.
+3. Move a Crab:
+  - Click on one of your crabs to select it. The available squares it can move to will be highlighted.
+  - Click on a highlighted square to move your crab there.
+4. Winning the Game: The first player to get four of their crabs in a continuous row (horizontally or vertically) wins the game!
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 💻 Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- React: A JavaScript library for building user interfaces.
+- TypeScript: A superset of JavaScript that adds static typing.
+- Tailwind CSS: A utility-first CSS framework for rapid UI development.
+- React Context API: For global state management (e.g., managing turns and game state).
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🚀 Getting Started (For Developers)
+
+To get this project up and running locally, follow these steps:
+
+1. Clone the repository: 
+```bash
+  git clone git@github.com:bernard-rodrigues/crab_game_react.git
+  # or
+  git clone https://github.com/bernard-rodrigues/crab_game_react.git
+  # then
+  cd crab_game_react
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
 ```
+
+3. Start the development server:
+```bash
+npm run dev
+# or
+yarn start # (not sure)
+```
+
+## 🙏 Contributing
+
+Contributions are welcome! If you have suggestions for improvements or find any bugs, please open an issue or submit a pull request.
+
+## 📄 License
+
+This project is open source and available under the MIT License.
