@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react"
-import { Board } from "./components/Board"
+import { useEffect, useState } from "react";
 import { TurnContext } from "./contexts/TurnContext";
-import { TurnTextbox } from "./components/TurnTextbox";
+import { InGame } from "./pages/InGame";
+import { MainMenu } from "./pages/MainMenu";
+import { HowToPlay } from "./pages/HowToPlay";
 
 export const App = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [currentPlayer, setCurrentPlayer] = useState(() => Math.random() < 0.5 ? 1 : 2);
+
+  const [gameState, setGameState] = useState(0); // 0: not started, 1: in progress, 2: how to play, 3: game over
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,23 +25,35 @@ export const App = () => {
   const togglePlayer = () => {
     setCurrentPlayer(currentPlayer === 1 ? 2 : 1); 
   }
+
+  const handleGameStateChange = (newState: number) => {
+    if(newState === 1){
+      setCurrentPlayer(Math.random() < 0.5 ? 1 : 2); // Randomly assign starting player
+    }
+    setGameState(newState);
+  }
   
   return (
     <TurnContext.Provider value={{
       currentPlayer,
-      togglePlayer
+      togglePlayer,
+      screenWidth,
+      gameState,
+      handleGameStateChange
     }}>
       <main 
-        className="relative h-screen w-screen font-ribeye transition-all duration-500"
+        className="relative h-screen w-screen font-ribeye transition-all duration-500 overflow-hidden"
         style={{
           backgroundImage: "linear-gradient(to right, hsl(211, 100%, 80%) 0%, hsl(211, 100%, 65%) 50%, hsl(354, 70%, 68%) 50%, hsl(354, 70%, 83%) 100%)",
-          backgroundSize: "200% 100%",
+          backgroundSize: gameState === 1 ? "200% 100%" : "100% 100%",
           backgroundPosition: `${currentPlayer === 1 ? "0% 0%" : "100% 0%"}`
         }}
       >
-        <TurnTextbox currentPlayer={currentPlayer} screenWidth={screenWidth} textBoxOwner={1}/>
-        <TurnTextbox currentPlayer={currentPlayer} screenWidth={screenWidth} textBoxOwner={2}/>
-        <Board />
+        {gameState === 0
+          ? <MainMenu /> : gameState === 2
+          ? <HowToPlay /> : <InGame />
+        }
+
       </main>
     </TurnContext.Provider>
   )

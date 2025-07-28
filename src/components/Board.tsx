@@ -1,18 +1,29 @@
 import { useContext, useEffect, useState } from "react"
 import { Crab } from "./Crab"
-import { crabsStart } from "../constants/constants";
+import { crabsStart, messages } from "../constants/constants";
 import type { CrabObject } from "../types/types";
 import { TurnContext } from "../contexts/TurnContext";
+import { Square } from "./Square";
+import {MessageModal} from "./MessageModal";
 
 export const Board = () => {
-    const {currentPlayer, togglePlayer} = useContext(TurnContext);
+    const {currentPlayer, togglePlayer, gameState, handleGameStateChange} = useContext(TurnContext);
+    const [currentMessage, setCurrentMessage] = useState("");
+    const [modalOpen, setModalOpen] = useState(false);
     
     const [availableSquares, setAvailableSquares] = useState<{x: number, y: number}[]>([]);
     const [crabs, setCrabs] = useState<CrabObject[]>(crabsStart);
-
+    
     useEffect(() => {
         checkWinner();
     }, [crabs]);
+
+    useEffect(() => {
+        if(gameState === 1){
+            setCrabs(crabsStart);
+            handleModalClose();
+        }
+    }, [gameState])
 
     const handleAvailableSquares = (crabPosition: { x: number; y: number }) => {
         const newAvailableSquares = [];
@@ -62,33 +73,34 @@ export const Board = () => {
         setAvailableSquares(newAvailableSquares);
     };
 
-    
-
     const handleCrabSelection = (crab: CrabObject) => {
-        if(crab.player === currentPlayer){
-
-            // Check if the selected crab is active
-            if (crab.active) {
-                // Set the current crab as inactive
-                setCrabs(crabs.map(currentCrab =>
-                    currentCrab.x === crab.x && currentCrab.y === crab.y
-                        ? { ...currentCrab, active: false }
-                        : currentCrab
-                ));
-                setAvailableSquares([]);
-            } else {
-                handleAvailableSquares({ x: crab.x, y: crab.y });
-                // Set the current crab as active
-                setCrabs(crabs.map(currentCrab =>
-                    currentCrab.x === crab.x && currentCrab.y === crab.y
-                        ? { ...currentCrab, active: true }
-                        : currentCrab.player === currentPlayer
+        // If in game
+        if(gameState === 1){
+            if(crab.player === currentPlayer){
+    
+                // Check if the selected crab is active
+                if (crab.active) {
+                    // Set the current crab as inactive
+                    setCrabs(crabs.map(currentCrab =>
+                        currentCrab.x === crab.x && currentCrab.y === crab.y
                             ? { ...currentCrab, active: false }
                             : currentCrab
-                ));
+                    ));
+                    setAvailableSquares([]);
+                } else {
+                    handleAvailableSquares({ x: crab.x, y: crab.y });
+                    // Set the current crab as active
+                    setCrabs(crabs.map(currentCrab =>
+                        currentCrab.x === crab.x && currentCrab.y === crab.y
+                            ? { ...currentCrab, active: true }
+                            : currentCrab.player === currentPlayer
+                                ? { ...currentCrab, active: false }
+                                : currentCrab
+                    ));
+                }
+            }else{
+                handleModalMessage(messages.notYourTurn);
             }
-        }else{
-            alert("Hey! It's not your turn!");
         }
     }
 
@@ -108,7 +120,7 @@ export const Board = () => {
                 setAvailableSquares([]);
                 togglePlayer();
             }else{
-                alert("Not allowed move!");
+                handleModalMessage(messages.notAllowedMove);
             }
         }
     }
@@ -142,7 +154,9 @@ export const Board = () => {
             }
         }
         if(winner !== 0){
-            setTimeout(() => alert(`Winner is Player ${winner}!`), 100);
+            // Set as game over
+            handleGameStateChange(3);
+            handleModalMessage(winner === 1 ? messages.victoryBlue : messages.victoryRed);
         }
     }
 
@@ -152,34 +166,34 @@ export const Board = () => {
                 square.x === (squareId % 6) &&
                 square.y === Math.floor(squareId / 6)
         )
-    } 
+    }
+
+    const handleModalOpen = () => setModalOpen(true);
+    const handleModalClose = () => setModalOpen(false);
+
+    const handleModalMessage = (message: string) => {
+        setCurrentMessage(message);
+        handleModalOpen();
+    }
     
     return(
-        <div id="board" className="
-            w-[95%] md:w-3/4 lg:w-auto lg:h-[80%] aspect-square 
-            absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 
-            grid grid-cols-6 grid-rows-6 
-            border-4 border-main-text shadow-2xl
-        ">
+        <div 
+            id="board" 
+            className="
+                w-[95%] md:w-3/4 lg:w-auto lg:h-[80%] aspect-square 
+                absolute left-1/2 top-1/2 -translate-x-1/2
+                grid grid-cols-6 grid-rows-6
+                border-2 border-main-text shadow-2xl
+                animate-appear-from-up-to-center duration-500 ease-in-out
+            "
+        >
             {[...Array(36)].map((_, squareId) => (
-            <div
-                id={`square-${squareId}`}
-                key={squareId}
-                className={`w-full h-full ${
-                    ((Math.floor(squareId / 6) + squareId % 6) % 2 === 0 ? "bg-linear-to-br from-slate-300 to-slate-200" : "bg-linear-to-br from-slate-100 to-slate-50")
-                }`}
-                onClick={() => moveCrab(squareId)}
-            >
-                {/* Possible positions shadow */}
-                <div 
-                    className="w-full h-full rounded-full transition-all duration-300"
-                    style={{
-                        opacity: checkAvailability(squareId) ? "0.35" : "0",
-                        backgroundColor: currentPlayer === 1 ? "hsl(211, 100%, 50%)" : "hsl(354, 70%, 53%)",
-                        scale: checkAvailability(squareId) ? "0.9" : "0"
-                    }}
+                <Square 
+                    key={squareId}
+                    squareId={squareId}
+                    moveCrabFunction={moveCrab}
+                    checkAvailabilityFunction={checkAvailability}
                 />
-            </div>
             ))}
             
             {/* Crabs distribution on the board */}
@@ -190,6 +204,12 @@ export const Board = () => {
                     handleCrabActiveFunction={handleCrabSelection}
                 />
             ))}
+
+            <MessageModal 
+                isOpen={modalOpen} 
+                message={currentMessage} 
+                closeModalFunction={handleModalClose}
+            />
         </div>   
     );
 }
