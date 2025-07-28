@@ -5,25 +5,40 @@ import type { CrabObject } from "../types/types";
 import { TurnContext } from "../contexts/TurnContext";
 import { Square } from "./Square";
 import {MessageModal} from "./MessageModal";
+import { useAIPlayer } from "../ai/cpu";
 
 export const Board = () => {
+    const aiPlayer = 2;
+    
     const {currentPlayer, togglePlayer, gameState, handleGameStateChange} = useContext(TurnContext);
     const [currentMessage, setCurrentMessage] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     
     const [availableSquares, setAvailableSquares] = useState<{x: number, y: number}[]>([]);
     const [crabs, setCrabs] = useState<CrabObject[]>(crabsStart);
+
+    const { makeAIMove } = useAIPlayer();
+    const [ isAIMode, setIsAIMode ] = useState(false);
+    const [isAIThinking, setIsAIThinking] = useState(false);
+    
+    useEffect(() => {
+        if (isAIMode && currentPlayer === aiPlayer && gameState === 2 && !isAIThinking) {
+            makeAIMove(crabs, aiPlayer, setCrabs, togglePlayer, setIsAIThinking);
+        }
+    }, [currentPlayer, gameState, isAIMode]);
     
     useEffect(() => {
         checkWinner();
     }, [crabs]);
 
+    // Reset game board for any new game
     useEffect(() => {
-        if(gameState === 1){
+        if(gameState === 1 || gameState === 2){
             setCrabs(crabsStart);
             handleModalClose();
+            setIsAIMode(gameState === 2);
         }
-    }, [gameState])
+    }, [gameState]);
 
     const handleAvailableSquares = (crabPosition: { x: number; y: number }) => {
         const newAvailableSquares = [];
@@ -75,7 +90,7 @@ export const Board = () => {
 
     const handleCrabSelection = (crab: CrabObject) => {
         // If in game
-        if(gameState === 1){
+        if(gameState === 1 || gameState === 2){
             if(crab.player === currentPlayer){
     
                 // Check if the selected crab is active
@@ -155,7 +170,7 @@ export const Board = () => {
         }
         if(winner !== 0){
             // Set as game over
-            handleGameStateChange(3);
+            handleGameStateChange(4);
             handleModalMessage(winner === 1 ? messages.victoryBlue : messages.victoryRed);
         }
     }

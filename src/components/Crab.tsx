@@ -39,7 +39,7 @@ export const Crab = (props: CrabProps) => {
             `}
             style={isHovered && currentPlayer === props.crab.player ? { ...crabStyle, ...hoverStyle } : crabStyle}
             onClick={() => props.handleCrabActiveFunction(props.crab)}
-            onMouseEnter={() => setIsHovered(gameState === 1 ? true : false)}
+            onMouseEnter={() => setIsHovered(gameState === 1 || gameState === 2 ? true : false)}
             onMouseLeave={() => setIsHovered(false)}
         />
     );
