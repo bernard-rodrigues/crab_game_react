@@ -1,1 +1,80 @@
 @import "tailwindcss";
+
+@theme{
+    --color-main-text: hsl(6, 10%, 19%);
+    --color-crab-blue-left: hsl(211, 100%, 60%);
+    --color-crab-blue-right: hsl(211, 100%, 40%);
+    --color-crab-red-left: hsl(354, 70%, 63%);
+    --color-crab-red-right: hsl(354, 70%, 43%);
+    
+    --font-ribeye: "Ribeye", serif;
+    --font-montserrat: "Montserrat", sans-serif;
+
+    --animate-appear-from-up-to-center: appearFromUpToCenter 0.5s ease-in-out forwards;
+    --animate-appear-from-up: appearFromUp 0.5s ease-in-out forwards;
+    --animate-appear-from-down: appearFromDown 0.5s ease-in-out forwards;
+    --animate-appear-from-down-no-opacity: appearFromDownNoOpacity 0.5s ease-in-out forwards;
+    --animate-appear: appear 0.5s ease-in-out forwards;
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(-2.5%) scale(0.9);
+            animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+        }
+        50% {
+            transform:  scale(0.9);
+            animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        }
+    }
+
+    @keyframes appearFromUpToCenter {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(-50%);
+            opacity: 1;
+        }
+    }
+
+    @keyframes appearFromUp {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes appearFromDown {
+        0% {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes appearFromDownNoOpacity {
+        0% {
+            transform: translateY(300%);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes appear{
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+}
