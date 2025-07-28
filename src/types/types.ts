@@ -1,7 +1,7 @@
 export interface CrabObject{
     x: number
     y: number
-    player: number
-    active: boolean,
+    player: 1 | 2
+    active: boolean
     id: string
 }

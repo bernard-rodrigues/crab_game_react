@@ -1,5 +1,7 @@
 import type { CrabObject } from "../types/types"
 
+export const BOARD_SIZE = 6;
+
 export const crabsStart: CrabObject[] = [
     {x: 0, y: 0, player: 1, active: false, id: "11"},
     {x: 3, y: 0, player: 1, active: false, id: "12"},

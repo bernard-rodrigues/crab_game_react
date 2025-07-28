@@ -49,9 +49,9 @@ export const MessageModal = (props: MessageModalProps) => {
           >
             {props.message}
           </Typography>
-          {gameState === 3 ? 
+          {gameState === 4 ? 
           <div className='flex gap-3 justify-center'>
-            <MenuButton gameState={1} title="Play again" isModal={true}/>
+            <MenuButton gameState={gameState} title="Play again" isModal={true}/>
             <MenuButton gameState={0} title="Exit" isModal={true}/>
           </div> : <></>
           }
