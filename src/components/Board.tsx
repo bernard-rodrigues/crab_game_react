@@ -10,7 +10,7 @@ import { useAIPlayer } from "../ai/cpu";
 export const Board = () => {
     const aiPlayer = 2;
     
-    const {currentPlayer, togglePlayer, gameState, handleGameStateChange} = useContext(TurnContext);
+    const {currentPlayer, togglePlayer, gameState, handleGameStateChange, isAIMode, handleIsAIMode} = useContext(TurnContext);
     const [currentMessage, setCurrentMessage] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     
@@ -18,7 +18,7 @@ export const Board = () => {
     const [crabs, setCrabs] = useState<CrabObject[]>(crabsStart);
 
     const { makeAIMove } = useAIPlayer();
-    const [ isAIMode, setIsAIMode ] = useState(false);
+    
     const [isAIThinking, setIsAIThinking] = useState(false);
     
     useEffect(() => {
@@ -36,7 +36,7 @@ export const Board = () => {
         if(gameState === 1 || gameState === 2){
             setCrabs(crabsStart);
             handleModalClose();
-            setIsAIMode(gameState === 2);
+            handleIsAIMode(gameState === 2);
         }
     }, [gameState]);
 
@@ -171,7 +171,11 @@ export const Board = () => {
         if(winner !== 0){
             // Set as game over
             handleGameStateChange(4);
-            handleModalMessage(winner === 1 ? messages.victoryBlue : messages.victoryRed);
+            handleModalMessage(
+                winner === 1 ? 
+                (isAIMode ? messages.victoryPlayer : messages.victoryBlue) :
+                (isAIMode ? messages.victoryCPU : messages.victoryRed)
+            )
         }
     }
 

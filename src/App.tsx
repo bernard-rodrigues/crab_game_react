@@ -9,6 +9,7 @@ export const App = () => {
   const [currentPlayer, setCurrentPlayer] = useState(() => Math.random() < 0.5 ? 1 : 2);
 
   const [gameState, setGameState] = useState(0); // 0: not started, 1: local, 2: vs CPU, 3: how to play, 4: game over
+  const [isAIMode, setIsAIMode] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,6 +33,10 @@ export const App = () => {
     }
     setGameState(newState);
   }
+
+  const handleIsAIMode = (state: boolean) => {
+    setIsAIMode(state);
+  }
   
   return (
     <TurnContext.Provider value={{
@@ -39,7 +44,9 @@ export const App = () => {
       togglePlayer,
       screenWidth,
       gameState,
-      handleGameStateChange
+      handleGameStateChange,
+      isAIMode,
+      handleIsAIMode
     }}>
       <main 
         className="relative h-screen w-screen font-ribeye transition-all duration-500 overflow-hidden"
