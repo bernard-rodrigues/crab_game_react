@@ -171,7 +171,11 @@ export const Board = () => {
         if(winner !== 0){
             // Set as game over
             handleGameStateChange(4);
-            handleModalMessage(winner === 1 ? messages.victoryBlue : messages.victoryRed);
+            handleModalMessage(
+                winner === 1 ? 
+                (isAIMode ? messages.victoryPlayer : messages.victoryBlue) :
+                (isAIMode ? messages.victoryCPU : messages.victoryRed)
+            )
         }
     }
 
