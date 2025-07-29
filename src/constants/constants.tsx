@@ -79,5 +79,5 @@ export const messages = {
     victoryPlayer: "🎉🎉 You win! 🎉🎉",
     victoryCPU: "You lose...",
     notAllowedMove: "Oops! This move is not allowed.",
-    notYourTurn: "Hey! It's not your turn!"
+    notYourTurn: "Hey! This is not your color!"
 }
