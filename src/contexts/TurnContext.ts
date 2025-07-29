@@ -6,6 +6,8 @@ interface TurnContextProps{
   screenWidth: number
   gameState: number
   handleGameStateChange: (newState: number) => void
+  isAIMode: boolean
+  handleIsAIMode: (state: boolean) => void
 }
 
 export const TurnContext = createContext({} as TurnContextProps);
