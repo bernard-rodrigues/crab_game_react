@@ -18,7 +18,7 @@ export const MainMenu = () => {
             </div>
             <div className="flex flex-col gap-5 animate-appear-from-down">
                 <MenuButton title="Local 2P" gameState={1} isModal={false}/>
-                <MenuButton title="Versus CPU" gameState={2} isModal={false}/>
+                <MenuButton title="Versus CPU" gameState={5} isModal={false}/>
                 <MenuButton title="How to Play" gameState={3} isModal={false} />    
             </div>
         </div>

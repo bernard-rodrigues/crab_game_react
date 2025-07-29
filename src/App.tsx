@@ -3,13 +3,21 @@ import { TurnContext } from "./contexts/TurnContext";
 import { InGame } from "./pages/InGame";
 import { MainMenu } from "./pages/MainMenu";
 import { HowToPlay } from "./pages/HowToPlay";
+import { LevelSelect } from "./pages/LevelSelect";
 
 export const App = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [currentPlayer, setCurrentPlayer] = useState(() => Math.random() < 0.5 ? 1 : 2);
 
-  const [gameState, setGameState] = useState(0); // 0: not started, 1: local, 2: vs CPU, 3: how to play, 4: game over
+  // 0: not started 
+  // 1: local
+  // 2: vs CPU
+  // 3: how to play
+  // 4: game over
+  // 5: level select
+  const [gameState, setGameState] = useState(0);
   const [isAIMode, setIsAIMode] = useState(false);
+  const [aiLevel, setAILevel] = useState(1);
 
   useEffect(() => {
     const handleResize = () => {
@@ -25,17 +33,21 @@ export const App = () => {
 
   const togglePlayer = () => {
     setCurrentPlayer(currentPlayer === 1 ? 2 : 1); 
-  }
+  };
 
   const handleGameStateChange = (newState: number) => {
-    if(newState === 1){
+    if(newState === 1 || newState === 2){
       setCurrentPlayer(Math.random() < 0.5 ? 1 : 2); // Randomly assign starting player
     }
     setGameState(newState);
-  }
+  };
 
   const handleIsAIMode = (state: boolean) => {
     setIsAIMode(state);
+  };
+
+  const handleAILevel = (level: number) => {
+    setAILevel(level);
   }
   
   return (
@@ -46,7 +58,9 @@ export const App = () => {
       gameState,
       handleGameStateChange,
       isAIMode,
-      handleIsAIMode
+      handleIsAIMode,
+      aiLevel,
+      handleAILevel
     }}>
       <main 
         className="relative h-screen w-screen font-ribeye transition-all duration-500 overflow-hidden"
@@ -58,10 +72,11 @@ export const App = () => {
       >
         {gameState === 0
           ? <MainMenu /> : gameState === 3
-          ? <HowToPlay /> : <InGame />
+          ? <HowToPlay /> : gameState === 5
+          ? <LevelSelect /> : <InGame />
         }
 
       </main>
     </TurnContext.Provider>
-  )
-}
+  );
+};

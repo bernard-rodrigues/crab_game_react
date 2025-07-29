@@ -10,7 +10,7 @@ import { useAIPlayer } from "../ai/cpu";
 export const Board = () => {
     const aiPlayer = 2;
     
-    const {currentPlayer, togglePlayer, gameState, handleGameStateChange, isAIMode, handleIsAIMode} = useContext(TurnContext);
+    const {currentPlayer, togglePlayer, gameState, handleGameStateChange, isAIMode, handleIsAIMode, aiLevel} = useContext(TurnContext);
     const [currentMessage, setCurrentMessage] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     
@@ -23,7 +23,7 @@ export const Board = () => {
     
     useEffect(() => {
         if (isAIMode && currentPlayer === aiPlayer && gameState === 2 && !isAIThinking) {
-            makeAIMove(crabs, aiPlayer, setCrabs, togglePlayer, setIsAIThinking);
+            makeAIMove(crabs, aiPlayer, setCrabs, togglePlayer, aiLevel, setIsAIThinking);
         }
     }, [currentPlayer, gameState, isAIMode]);
     
@@ -117,7 +117,7 @@ export const Board = () => {
                 handleModalMessage(messages.notYourTurn);
             }
         }
-    }
+    };
 
     const moveCrab = (squareId: number) => {
         const activeCrab = crabs.find(crab => crab.active === true);
@@ -138,7 +138,7 @@ export const Board = () => {
                 handleModalMessage(messages.notAllowedMove);
             }
         }
-    }
+    };
 
     const checkWinner = (): void => {
         let winner = 0;
@@ -175,9 +175,9 @@ export const Board = () => {
                 winner === 1 ? 
                 (isAIMode ? messages.victoryPlayer : messages.victoryBlue) :
                 (isAIMode ? messages.victoryCPU : messages.victoryRed)
-            )
+            );
         }
-    }
+    };
 
     const checkAvailability = (squareId: number) => {
         return availableSquares.some(
@@ -185,7 +185,7 @@ export const Board = () => {
                 square.x === (squareId % 6) &&
                 square.y === Math.floor(squareId / 6)
         )
-    }
+    };
 
     const handleModalOpen = () => setModalOpen(true);
     const handleModalClose = () => setModalOpen(false);
@@ -193,7 +193,7 @@ export const Board = () => {
     const handleModalMessage = (message: string) => {
         setCurrentMessage(message);
         handleModalOpen();
-    }
+    };
     
     return(
         <div 
@@ -231,4 +231,4 @@ export const Board = () => {
             />
         </div>   
     );
-}
+};
