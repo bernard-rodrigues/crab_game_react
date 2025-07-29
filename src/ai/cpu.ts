@@ -16,7 +16,6 @@ interface GameState {
 export class CrabMinimaxAI {
     private readonly BOARD_SIZE = 6;
     private readonly WIN_LENGTH = 4;
-    private readonly MAX_DEPTH = 4; // Profundidade máxima para o Minimax
     
     // Pesos para a função de avaliação
     private readonly WEIGHTS = {
@@ -34,7 +33,7 @@ export class CrabMinimaxAI {
      * Função principal que retorna o melhor movimento para a IA
      * Agora com verificação prioritária de vitórias imediatas
      */
-    public getBestMove(crabs: CrabObject[], aiPlayer: number): Move | null {
+    public getBestMove(crabs: CrabObject[], aiPlayer: number, maxDepth: number): Move | null {
         // Primeiro, verifica se há uma vitória imediata disponível
         const possibleMoves = this.getAllPossibleMoves(crabs, aiPlayer);
         
@@ -57,7 +56,6 @@ export class CrabMinimaxAI {
                     ourMove.toX === move.toX && ourMove.toY === move.toY
                 );
                 if (blockingMoves.length > 0) {
-                    console.log("IA bloqueou vitória do oponente!");
                     return blockingMoves[0];
                 }
             }
@@ -65,7 +63,7 @@ export class CrabMinimaxAI {
         
         // Se não há jogadas críticas, usa o algoritmo Minimax normal
         const gameState: GameState = { crabs: [...crabs], currentPlayer: aiPlayer };
-        const result = this.minimax(gameState, this.MAX_DEPTH, -Infinity, Infinity, true);
+        const result = this.minimax(gameState, maxDepth, -Infinity, Infinity, true);
         return result.move;
     }
 
@@ -421,6 +419,7 @@ export const useAIPlayer = () => {
         aiPlayer: number, 
         setCrabs: Function, 
         togglePlayer: Function,
+        maxDepth: number,
         setIsAIThinking?: Function
     ) => {
         // Marca que a IA está "pensando" para evitar múltiplas jogadas
@@ -428,7 +427,7 @@ export const useAIPlayer = () => {
         
         // Adiciona um pequeno delay para simular "pensamento" da IA
         setTimeout(() => {
-            const bestMove = ai.getBestMove(crabs, aiPlayer);
+            const bestMove = ai.getBestMove(crabs, aiPlayer, maxDepth);
             
             if (bestMove) {
                 // Aplica o movimento da IA
