@@ -22,7 +22,7 @@ const style = {
 };
 
 export const MessageModal = (props: MessageModalProps) => {
-  const {gameState} = useContext(TurnContext);
+  const {gameState, isAIMode} = useContext(TurnContext);
   
   return (
     <Modal
@@ -51,7 +51,7 @@ export const MessageModal = (props: MessageModalProps) => {
           </Typography>
           {gameState === 4 ? 
           <div className='flex gap-3 justify-center'>
-            <MenuButton gameState={gameState} title="Play again" isModal={true}/>
+            <MenuButton gameState={isAIMode ? 2 : 1} title="Play again" isModal={true}/>
             <MenuButton gameState={0} title="Exit" isModal={true}/>
           </div> : <></>
           }
