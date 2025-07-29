@@ -10,7 +10,7 @@ export const InGame = () => {
     return(
         <>
             <ExitDoor />
-            {gameState !== 3 ? 
+            {gameState === 1 || gameState === 2 ? 
             <>
                 <TurnTextbox currentPlayer={currentPlayer} screenWidth={screenWidth} textBoxOwner={1}/>
                 <TurnTextbox currentPlayer={currentPlayer} screenWidth={screenWidth} textBoxOwner={2}/>
