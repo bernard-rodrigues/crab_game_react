@@ -23,7 +23,7 @@ const style = {
 
 export const MessageModal = (props: MessageModalProps) => {
   const {gameState, isAIMode} = useContext(TurnContext);
-  
+
   return (
     <Modal
       open={props.isOpen}
@@ -37,7 +37,10 @@ export const MessageModal = (props: MessageModalProps) => {
       }}
     >
       <Slide in={props.isOpen} direction="down">
-        <Box sx={style}>
+        <Box
+          sx={style}
+          onClick={props.closeModalFunction}
+        >
           <Typography 
             id="modal-modal-description" 
             sx={{
@@ -50,7 +53,10 @@ export const MessageModal = (props: MessageModalProps) => {
             {props.message}
           </Typography>
           {gameState === 4 ? 
-          <div className='flex gap-3 justify-center'>
+          <div
+            className='flex gap-3 justify-center'
+            onClick={e => e.stopPropagation()}
+          >
             <MenuButton gameState={isAIMode ? 2 : 1} title="Play again" isModal={true}/>
             <MenuButton gameState={0} title="Exit" isModal={true}/>
           </div> : <></>
