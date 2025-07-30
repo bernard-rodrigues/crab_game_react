@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import { TurnContext } from "../contexts/TurnContext"
 import { ExitDoor } from "../components/ExitDoor";
+import { levels } from "../constants/constants";
 
 export const LevelSelect = () => {
     const {handleAILevel, handleGameStateChange} = useContext(TurnContext);
@@ -9,8 +10,6 @@ export const LevelSelect = () => {
         handleAILevel(level);
         handleGameStateChange(2);
     }
-
-    const levels = ["Easy", "Normal", "Hard", "Expert"]
     
     return(
         <>

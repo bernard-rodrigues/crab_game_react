@@ -18,6 +18,7 @@ export const App = () => {
   const [gameState, setGameState] = useState(0);
   const [isAIMode, setIsAIMode] = useState(false);
   const [aiLevel, setAILevel] = useState(1);
+  const [reset, setReset] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,9 +36,13 @@ export const App = () => {
     setCurrentPlayer(currentPlayer === 1 ? 2 : 1); 
   };
 
+  const randomizePlayer = () => {
+    setCurrentPlayer(Math.random() < 0.5 ? 1 : 2); // Randomly assign starting player
+  }
+
   const handleGameStateChange = (newState: number) => {
     if(newState === 1 || newState === 2){
-      setCurrentPlayer(Math.random() < 0.5 ? 1 : 2); // Randomly assign starting player
+      randomizePlayer();
     }
     setGameState(newState);
   };
@@ -49,10 +54,15 @@ export const App = () => {
   const handleAILevel = (level: number) => {
     setAILevel(level);
   }
+
+  const handleReset = (state: boolean) =>{
+    setReset(state);
+  }
   
   return (
     <TurnContext.Provider value={{
       currentPlayer,
+      randomizePlayer,
       togglePlayer,
       screenWidth,
       gameState,
@@ -60,7 +70,9 @@ export const App = () => {
       isAIMode,
       handleIsAIMode,
       aiLevel,
-      handleAILevel
+      handleAILevel,
+      reset,
+      handleReset
     }}>
       <main 
         className="relative h-screen w-screen font-ribeye transition-all duration-500 overflow-hidden"

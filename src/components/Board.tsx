@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { Crab } from "./Crab"
-import { crabsStart, messages } from "../constants/constants";
+import { crabsStart, levels, messages } from "../constants/constants";
 import type { CrabObject } from "../types/types";
 import { TurnContext } from "../contexts/TurnContext";
 import { Square } from "./Square";
@@ -10,7 +10,17 @@ import { useAIPlayer } from "../ai/cpu";
 export const Board = () => {
     const aiPlayer = 2;
     
-    const {currentPlayer, togglePlayer, gameState, handleGameStateChange, isAIMode, handleIsAIMode, aiLevel} = useContext(TurnContext);
+    const {
+        currentPlayer,
+        gameState, 
+        isAIMode, 
+        aiLevel,
+        togglePlayer, 
+        handleGameStateChange, 
+        handleIsAIMode,
+        reset,
+        handleReset
+    } = useContext(TurnContext);
     const [currentMessage, setCurrentMessage] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     
@@ -22,23 +32,31 @@ export const Board = () => {
     const [isAIThinking, setIsAIThinking] = useState(false);
     
     useEffect(() => {
-        if (isAIMode && currentPlayer === aiPlayer && gameState === 2 && !isAIThinking) {
-            makeAIMove(crabs, aiPlayer, setCrabs, togglePlayer, aiLevel, setIsAIThinking);
+        if (isAIMode && currentPlayer === aiPlayer && gameState === 2 && !isAIThinking && !checkWinner()) {
+            makeAIMove(
+                crabs, 
+                aiPlayer, 
+                setCrabs, 
+                togglePlayer, 
+                aiLevel, 
+                setIsAIThinking
+            );
         }
-    }, [currentPlayer, gameState, isAIMode]);
+    }, [gameState, isAIMode, crabs, currentPlayer]);
     
     useEffect(() => {
-        checkWinner();
+        checkWinner(true);
     }, [crabs]);
 
     // Reset game board for any new game
     useEffect(() => {
         if(gameState === 1 || gameState === 2){
-            setCrabs(crabsStart);
             handleModalClose();
             handleIsAIMode(gameState === 2);
+            setCrabs(crabsStart);
+            handleReset(false);
         }
-    }, [gameState]);
+    }, [gameState, reset]);
 
     const handleAvailableSquares = (crabPosition: { x: number; y: number }) => {
         const newAvailableSquares = [];
@@ -140,43 +158,46 @@ export const Board = () => {
         }
     };
 
-    const checkWinner = (): void => {
+    const checkWinner = (handlingState: boolean = false): number => {
         let winner = 0;
+
+        // Helper to check 4 in a line
+        const checkLine = (getPos: (i: number, fixed: number) => { x: number, y: number }) => {
+            for (let fixed = 0; fixed < 6; fixed++) {
+                for (let j = 0; j <= 6 - 4; j++) {
+                    const positions = Array.from({ length: 4 }, (_, k) => getPos(j + k, fixed));
+                    const crabsInLine = crabs.filter(crab =>
+                        positions.some(pos => crab.x === pos.x && crab.y === pos.y)
+                    );
+                    if (crabsInLine.length === 4) {
+                        if (crabsInLine.every(crab => crab.player === 1)) {
+                            return 1;
+                        } else if (crabsInLine.every(crab => crab.player === 2)) {
+                            return 2;
+                        }
+                    }
+                }
+            }
+            return 0;
+        };
+
         // Check rows
-        for (let y = 0; y < 6; y++) {
-            for (let x = 0; x <= 6 - 4; x++) {
-                const rowCrabs = crabs.filter(crab => crab.y === y && crab.x >= x && crab.x < x + 4);
-                if (rowCrabs.length === 4) {
-                    if (rowCrabs.every(crab => crab.player === 1)) {
-                        winner = 1;
-                    } else if (rowCrabs.every(crab => crab.player === 2)) {
-                        winner = 2;
-                    }
-                }
-            }
-        }
+        winner = checkLine((j, row) => ({ x: j, y: row })) || winner;
         // Check columns
-        for (let x = 0; x < 6; x++) {
-            for (let y = 0; y <= 6 - 4; y++) {
-                const colCrabs = crabs.filter(crab => crab.x === x && crab.y >= y && crab.y < y + 4);
-                if (colCrabs.length === 4) {
-                    if (colCrabs.every(crab => crab.player === 1)) {
-                        winner = 1;
-                    } else if (colCrabs.every(crab => crab.player === 2)) {
-                        winner = 2;
-                    }
-                }
-            }
-        }
-        if(winner !== 0){
+        winner = checkLine((j, col) => ({ x: col, y: j })) || winner;
+
+        // handlingState is used for AI call of the function which should not handle state, just check
+        if (winner !== 0 && handlingState) {
             // Set as game over
             handleGameStateChange(4);
             handleModalMessage(
-                winner === 1 ? 
-                (isAIMode ? messages.victoryPlayer : messages.victoryBlue) :
-                (isAIMode ? messages.victoryCPU : messages.victoryRed)
+                winner === 1
+                    ? (isAIMode ? `${messages.victoryPlayer} (${levels[aiLevel - 1]})`  : messages.victoryBlue)
+                    : (isAIMode ? `${messages.victoryCPU} (${levels[aiLevel - 1]})` : messages.victoryRed)
             );
         }
+
+        return winner;
     };
 
     const checkAvailability = (squareId: number) => {
