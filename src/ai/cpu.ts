@@ -20,13 +20,13 @@ export class CrabMinimaxAI {
     // Pesos para a função de avaliação
     private readonly WEIGHTS = {
         WIN: 100000,
-        IMMEDIATE_WIN: 50000,        // Movimento que ganha imediatamente
-        BLOCK_OPPONENT_WIN: 25000,   // Bloquear vitória do oponente
-        THREE_IN_ROW: 500,           // Muito mais agressivo
-        BLOCK_THREE: 400,            // Bloquear 3 em linha do oponente
+        IMMEDIATE_WIN: 50000,
+        BLOCK_OPPONENT_WIN: 25000,
+        THREE_IN_ROW: 500,
+        BLOCK_THREE: 400,
         TWO_IN_ROW: 50,
         BLOCK_TWO: 25,
-        MOBILITY: 1                  // Reduzido, menos importante
+        MOBILITY: 15
     };
 
     /**
