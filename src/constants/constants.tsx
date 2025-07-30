@@ -18,6 +18,8 @@ export const crabsStart: CrabObject[] = [
     {x: 3, y: 5, player: 2, active: false, id: "26"},
 ];
 
+export const levels = ["Easy", "Normal", "Hard", "Expert"];
+
 export const rules = [
         {
             title: "Objective",

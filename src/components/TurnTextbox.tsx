@@ -1,3 +1,7 @@
+import { useContext } from "react";
+import { TurnContext } from "../contexts/TurnContext";
+import { levels } from "../constants/constants";
+
 interface TurnTextboxProps {
     currentPlayer: number;
     textBoxOwner: number;
@@ -7,6 +11,7 @@ interface TurnTextboxProps {
 // Functional React component that displays a heading indicating whose turn it is ("Blue's turn" or "Red's turn")
 // The position and visibility of the text changes based on screen size, current player, and textbox ownership
 export const TurnTextbox = (props: TurnTextboxProps) => {
+    const {aiLevel, isAIMode} = useContext(TurnContext);
     return (
         <h2 
             // Tailwind CSS classes for responsive layout, fixed position, and smooth transitions
@@ -47,7 +52,7 @@ export const TurnTextbox = (props: TurnTextboxProps) => {
                 )
             }
         >
-            {props.textBoxOwner === 1 ? "Blue" : "Red"}'s turn
+            {props.textBoxOwner === 1 ? "Blue" : "Red"}'s turn {isAIMode && props.textBoxOwner === 2 ? <span className="text-xs">({levels[aiLevel - 1]})</span> : ""}
         </h2>
     )
 }

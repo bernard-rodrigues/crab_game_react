@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { Crab } from "./Crab"
-import { crabsStart, messages } from "../constants/constants";
+import { crabsStart, levels, messages } from "../constants/constants";
 import type { CrabObject } from "../types/types";
 import { TurnContext } from "../contexts/TurnContext";
 import { Square } from "./Square";
@@ -11,13 +11,15 @@ export const Board = () => {
     const aiPlayer = 2;
     
     const {
-        currentPlayer, 
+        currentPlayer,
         gameState, 
         isAIMode, 
         aiLevel,
         togglePlayer, 
         handleGameStateChange, 
-        handleIsAIMode
+        handleIsAIMode,
+        reset,
+        handleReset
     } = useContext(TurnContext);
     const [currentMessage, setCurrentMessage] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
@@ -40,7 +42,7 @@ export const Board = () => {
                 setIsAIThinking
             );
         }
-    }, [gameState, isAIMode, crabs]);
+    }, [gameState, isAIMode, crabs, currentPlayer]);
     
     useEffect(() => {
         checkWinner(true);
@@ -49,11 +51,12 @@ export const Board = () => {
     // Reset game board for any new game
     useEffect(() => {
         if(gameState === 1 || gameState === 2){
-            setCrabs(crabsStart);
             handleModalClose();
             handleIsAIMode(gameState === 2);
+            setCrabs(crabsStart);
+            handleReset(false);
         }
-    }, [gameState]);
+    }, [gameState, reset]);
 
     const handleAvailableSquares = (crabPosition: { x: number; y: number }) => {
         const newAvailableSquares = [];
@@ -189,8 +192,8 @@ export const Board = () => {
             handleGameStateChange(4);
             handleModalMessage(
                 winner === 1
-                    ? (isAIMode ? messages.victoryPlayer : messages.victoryBlue)
-                    : (isAIMode ? messages.victoryCPU : messages.victoryRed)
+                    ? (isAIMode ? `${messages.victoryPlayer} (${levels[aiLevel - 1]})`  : messages.victoryBlue)
+                    : (isAIMode ? `${messages.victoryCPU} (${levels[aiLevel - 1]})` : messages.victoryRed)
             );
         }
 
