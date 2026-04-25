@@ -1,63 +1,80 @@
-# Crab Game
+# 🦀 Crab Game (Crab Connect)
 
-Crab Connect is a strategic board game where players move crabs across a 6x6 grid with the goal of getting four of their crabs in a row, either horizontally or vertically. Challenge a friend in two-player mode or test your skills against an AI opponent!
+Crab Connect is a strategic board game where players move crabs across a 6x6 grid with the goal of aligning four of their crabs horizontally or vertically. Challenge a friend in two-player mode or test your skills against a sophisticated AI opponent!
 
-## 🦀 Features
+## 📋 Table of Contents
+- [Description](#-description)
+- [Key Features](#-key-features)
+- [Tech Stack](#-tech-stack)
+- [Prerequisites](#-prerequisites)
+- [Installation](#-installation)
+- [Execution (Development)](#-execution-development)
+- [Execution (Production)](#-execution-production)
+- [Deployment](#-deployment)
+- [AI Logic Details](#-ai-logic-details)
 
-- Two Player Mode: Play against a friend on the same board.
-- AI Opponent: Challenge yourself against a computer-controlled opponent.
-- Intuitive Movement: Crabs move horizontally or vertically until they hit another crab or the edge of the board.
-- Dynamic Board: Visual indicators for available moves.
-- Win Detection: Automatically identifies when a player achieves four in a row.
-- Responsive Design: Enjoy the game on various screen sizes.
+## 📖 Description
+The game board consists of a 6x6 grid. Each player controls a set of crabs. Crabs move horizontally or vertically until they hit another crab or the edge of the board. The objective is to be the first to align four crabs in a row (horizontal or vertical).
 
-## 🎮 How to Play
+## ✨ Key Features
+- **Two Player Mode:** Compete against a friend locally.
+- **AI Opponent:** Play against a Minimax-based AI with multiple difficulty levels.
+- **Intuitive Movement:** Visual indicators show available moves when a crab is selected.
+- **Win Detection:** Automatic detection of horizontal and vertical winning lines.
+- **Responsive Design:** Optimized for various screen sizes, from mobile to desktop.
 
-1. Select a Game Mode: Choose between playing against another player or the AI.
-2. Player Turns: Players take turns moving their crabs.
-3. Move a Crab:
-  - Click on one of your crabs to select it. The available squares it can move to will be highlighted.
-  - Click on a highlighted square to move your crab there.
-4. Winning the Game: The first player to get four of their crabs in a continuous row (horizontally or vertically) wins the game!
+## 🛠 Tech Stack
+- **Framework:** [React 19](https://react.dev/) (TypeScript)
+- **Styling:** [Tailwind CSS 4](https://tailwindcss.com/) & [Material UI (MUI)](https://mui.com/)
+- **Bundler:** [Vite](https://vitejs.dev/)
+- **State Management:** React Context API
+- **Deployment:** GitHub Pages
 
-## 💻 Tech Stack
+## ⚙️ Prerequisites
+Before starting, ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (v20 or higher recommended)
+- [npm](https://www.npmjs.com/) (usually comes with Node.js)
 
-- React: A JavaScript library for building user interfaces.
-- TypeScript: A superset of JavaScript that adds static typing.
-- Tailwind CSS: A utility-first CSS framework for rapid UI development.
-- React Context API: For global state management (e.g., managing turns and game state).
-
-## 🚀 Getting Started (For Developers)
-
-To get this project up and running locally, follow these steps:
-
-1. Clone the repository: 
-```bash
-  git clone git@github.com:bernard-rodrigues/crab_game_react.git
-  # or
-  git clone https://github.com/bernard-rodrigues/crab_game_react.git
-  # then
-  cd crab_game_react
-```
-
+## 🚀 Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/bernard-rodrigues/crab_game_react.git
+   cd crab_game_react
+   ```
 2. Install dependencies:
-```bash
-npm install
-# or
-yarn install
-```
+   ```bash
+   npm install
+   ```
 
-3. Start the development server:
+## 💻 Execution (Development)
+To start the development server:
 ```bash
 npm run dev
-# or
-yarn start # (not sure)
+```
+Open your browser and navigate to the address shown in the terminal (usually `http://localhost:5173`).
+
+## 🏗 Execution (Production)
+To build the project for production:
+```bash
+npm run build
+```
+The optimized output will be generated in the `dist/` directory. You can preview the production build locally with:
+```bash
+npm run preview
 ```
 
-## 🙏 Contributing
+## 🚢 Deployment
+The project is configured for deployment to GitHub Pages. To deploy:
+```bash
+npm run deploy
+```
+*Note: Ensure the `homepage` field in `package.json` matches your deployment URL.*
 
-Contributions are welcome! If you have suggestions for improvements or find any bugs, please open an issue or submit a pull request.
+## 🧠 AI Logic Details
+The AI opponent implements the **Minimax Algorithm** with **Alpha-Beta Pruning** to search for optimal moves. The decision-making process is guided by a heuristic evaluation function that weights:
+- **Immediate Win/Loss:** Highest priority to secure a win or block an opponent's winning move.
+- **Line Formation:** Scoring for 2 or 3 crabs in a row that can potentially lead to a win.
+- **Mobility:** Calculating available moves to maximize its own options while restricting the opponent.
 
-## 📄 License
-
-This project is open source and available under the MIT License.
+---
+Built with ❤️ by [Bernard Rodrigues](https://github.com/bernard-rodrigues)
